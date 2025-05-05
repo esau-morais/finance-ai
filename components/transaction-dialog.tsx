@@ -117,13 +117,9 @@ const formSchema = z.discriminatedUnion("type", [
 
 type TransactionDialogProps = {
   children: JSX.Element;
-  onSuccess(): void;
 };
 
-export function TransactionDialog({
-  children,
-  onSuccess,
-}: TransactionDialogProps) {
+export function TransactionDialog({ children }: TransactionDialogProps) {
   const [open, setOpen] = useState(false);
   const [transactionType, setTransactionType] = useState("expense");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -220,7 +216,6 @@ export function TransactionDialog({
         });
 
         setOpen(false);
-        if (onSuccess) onSuccess();
       } else {
         toast({
           title: "Error",

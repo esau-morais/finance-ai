@@ -26,14 +26,12 @@ export default async function DashboardPage() {
               Overview of your financial health
             </p>
           </div>
-          <TransactionDialog
-            trigger={
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                Add Transaction
-              </Button>
-            }
-          />
+          <TransactionDialog>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Transaction
+            </Button>
+          </TransactionDialog>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -206,14 +204,12 @@ export default async function DashboardPage() {
               <CardTitle>Recent Transactions</CardTitle>
               <CardDescription>Your recent financial activity</CardDescription>
             </div>
-            <TransactionDialog
-              trigger={
-                <Button variant="outline" size="sm">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Transaction
-                </Button>
-              }
-            />
+            <TransactionDialog>
+              <Button variant="outline" size="sm">
+                <Plus className="mr-2 h-4 w-4" />
+                Add Transaction
+              </Button>
+            </TransactionDialog>
           </CardHeader>
           <CardContent>
             <RecentTransactions />

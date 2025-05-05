@@ -10,6 +10,23 @@ import {
   Tooltip,
 } from "recharts";
 import { getMonthlyData } from "@/app/actions/transactions";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "./ui/chart";
+
+const chartConfig = {
+  income: {
+    label: "Income",
+    color: "hsl(var(--chart-1))",
+  },
+  expenses: {
+    label: "Expenses",
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig;
 
 export function Overview() {
   const [data, setData] = useState<Awaited<ReturnType<typeof getMonthlyData>>>(
@@ -41,8 +58,8 @@ export function Overview() {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={350}>
-      <BarChart data={data}>
+    <ChartContainer config={chartConfig}>
+      <BarChart accessibilityLayer data={data}>
         <XAxis
           dataKey="name"
           stroke="#888888"
@@ -57,23 +74,13 @@ export function Overview() {
           axisLine={false}
           tickFormatter={(value) => `$${value}`}
         />
-        <Tooltip
-          formatter={(value) => [`$${value}`, ""]}
-          labelFormatter={(label) => `Month: ${label}`}
+        <ChartTooltip
+          cursor={false}
+          content={<ChartTooltipContent indicator="line" />}
         />
-        <Bar
-          dataKey="income"
-          fill="#4ade80"
-          radius={[4, 4, 0, 0]}
-          name="Income"
-        />
-        <Bar
-          dataKey="expenses"
-          fill="#f87171"
-          radius={[4, 4, 0, 0]}
-          name="Expenses"
-        />
+        <Bar dataKey="income" fill="#4ade80" radius={4} name="Income" />
+        <Bar dataKey="expenses" fill="#f87171" radius={4} name="Expenses" />
       </BarChart>
-    </ResponsiveContainer>
+    </ChartContainer>
   );
 }
