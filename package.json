@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "update-types": "npx supabase gen types --lang=typescript --project-id \"$PROJECT_REF\" > ./lib/types/database.types.ts"
   },
   "dependencies": {
     "@ai-sdk/openai": "latest",
@@ -73,3 +74,4 @@
     "typescript": "^5"
   }
 }
+

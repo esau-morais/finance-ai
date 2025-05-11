@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -17,15 +17,23 @@ import { toast } from "@/hooks/use-toast";
 import { DollarSign, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Provider } from "@supabase/supabase-js";
-import { AppleLogo, GoogleLogo } from "@/components/icons";
-import { getUserIdByEmail } from "../actions/auth";
+import { GoogleLogo } from "@/components/icons";
+import { getUserIdByEmail } from "@/app/actions/auth";
+
+type Step = "email" | "signup" | "password";
+
+const titleByStep: Record<Step, string> = {
+  email: "Sign in to manage your finances",
+  password: "Welcome back",
+  signup: "Create your account",
+};
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [step, setStep] = useState("email");
+  const [step, setStep] = useState<Step>("email");
   const router = useRouter();
   const supabase = createClient();
 
@@ -56,7 +64,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleEmailSignIn = async (e) => {
+  const handleEmailSignIn = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -78,17 +86,18 @@ export default function LoginPage() {
       router.push("/");
       router.refresh();
     } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to sign in",
-        variant: "destructive",
-      });
+      if (error instanceof Error)
+        toast({
+          title: "Error",
+          description: error.message || "Failed to sign in",
+          variant: "destructive",
+        });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleEmailSignUp = async (e) => {
+  const handleEmailSignUp = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -113,11 +122,12 @@ export default function LoginPage() {
         description: "Check your email to confirm your account",
       });
     } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to sign up",
-        variant: "destructive",
-      });
+      if (error instanceof Error)
+        toast({
+          title: "Error",
+          description: error.message || "Failed to sign up",
+          variant: "destructive",
+        });
     } finally {
       setIsLoading(false);
     }
@@ -138,11 +148,12 @@ export default function LoginPage() {
         throw error;
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message || `Failed to sign in with ${provider}`,
-        variant: "destructive",
-      });
+      if (error instanceof Error)
+        toast({
+          title: "Error",
+          description: error.message || `Failed to sign in with ${provider}`,
+          variant: "destructive",
+        });
       setIsLoading(false);
     }
   };
@@ -157,35 +168,20 @@ export default function LoginPage() {
             </div>
           </div>
           <CardTitle className="text-2xl">FinanceAI Tracker</CardTitle>
-          <CardDescription>
-            {step === "email" && "Sign in to manage your finances"}
-            {step === "password" && "Welcome back"}
-            {step === "signup" && "Create your account"}
-          </CardDescription>
+          <CardDescription>{titleByStep[step]}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {step === "email" && (
             <>
-              <div className="grid grid-cols-2 gap-4">
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => handleOAuthSignIn("google")}
-                  disabled={isLoading}
-                >
-                  <GoogleLogo />
-                  Google
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => handleOAuthSignIn("apple")}
-                  disabled={isLoading}
-                >
-                  <AppleLogo />
-                  Apple
-                </Button>
-              </div>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => handleOAuthSignIn("google")}
+                disabled={isLoading}
+              >
+                <GoogleLogo />
+                Google
+              </Button>
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -252,6 +248,7 @@ export default function LoginPage() {
               </Button>
               <div className="text-center">
                 <Button
+                  type="button"
                   variant="link"
                   className="text-xs p-0 h-auto"
                   onClick={() => router.push("/forgot-password")}

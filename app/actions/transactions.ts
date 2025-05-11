@@ -174,20 +174,20 @@ export async function getFinancialSummary() {
 
   // Calculate totals
   const currentMonthIncome = currentMonthData
-    .filter((t) => Number.parseFloat(t.amount) > 0)
-    .reduce((sum, t) => sum + Number.parseFloat(t.amount), 0);
+    .filter((t) => t.amount > 0)
+    .reduce((sum, t) => sum + t.amount, 0);
 
   const currentMonthExpenses = currentMonthData
-    .filter((t) => Number.parseFloat(t.amount) < 0)
-    .reduce((sum, t) => sum + Math.abs(Number.parseFloat(t.amount)), 0);
+    .filter((t) => t.amount < 0)
+    .reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
   const prevMonthIncome = prevMonthData
-    .filter((t) => Number.parseFloat(t.amount) > 0)
-    .reduce((sum, t) => sum + Number.parseFloat(t.amount), 0);
+    .filter((t) => t.amount > 0)
+    .reduce((sum, t) => sum + t.amount, 0);
 
   const prevMonthExpenses = prevMonthData
-    .filter((t) => Number.parseFloat(t.amount) < 0)
-    .reduce((sum, t) => sum + Math.abs(Number.parseFloat(t.amount)), 0);
+    .filter((t) => t.amount < 0)
+    .reduce((sum, t) => sum + Math.abs(t.amount), 0);
 
   // Calculate percentages
   const incomeChange = prevMonthIncome
@@ -260,7 +260,7 @@ export async function getMonthlyData() {
       monthlyData[monthYear] = { income: 0, expenses: 0 };
     }
 
-    const amount = Number.parseFloat(transaction.amount);
+    const amount = transaction.amount;
     if (amount > 0) {
       monthlyData[monthYear].income += amount;
     } else {

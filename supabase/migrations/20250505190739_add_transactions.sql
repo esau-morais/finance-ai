@@ -1,5 +1,8 @@
+CREATE TYPE transaction_type AS ENUM ('investment', 'transfer');
+
 CREATE TABLE IF NOT EXISTS transactions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  type transaction_type NOT NULL,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   amount DECIMAL(12, 2) NOT NULL,
   description VARCHAR(255) NOT NULL,

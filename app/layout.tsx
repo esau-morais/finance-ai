@@ -2,14 +2,14 @@ import type React from "react";
 import "@/app/globals.css";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Sidebar } from "@/components/sidebar";
+import { AuthLayout } from "@/components/auth-layout";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Finance Tracker",
   description: "Track your finances and get AI-powered recommendations",
-  generator: "v0.dev",
 };
 
 export default function RootLayout({
@@ -26,10 +26,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex min-h-screen flex-col md:flex-row">
-            <Sidebar />
-            <div className="flex-1">{children}</div>
-          </div>
+          <AuthLayout>{children}</AuthLayout>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

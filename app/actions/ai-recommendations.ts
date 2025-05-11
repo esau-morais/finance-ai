@@ -34,7 +34,7 @@ export async function getAIRecommendations() {
 
   if (
     existingRecommendations.length > 0 &&
-    new Date(existingRecommendations[0].created_at) > twentyFourHoursAgo
+    new Date(existingRecommendations[0].created_at!) > twentyFourHoursAgo
   ) {
     return existingRecommendations;
   }
@@ -60,7 +60,7 @@ export async function generateRecommendations() {
   // Prepare data for AI analysis
   const transactionData = transactions.map((t) => ({
     date: t.transaction_date,
-    amount: Number.parseFloat(t.amount),
+    amount: t.amount,
     category: t.categories?.name || "Uncategorized",
     description: t.description,
   }));

@@ -52,7 +52,6 @@ export async function getUserIdByEmail(email: string) {
   });
 
   if (error) {
-    console.info({ error });
     throw new Error("getUserIdByEmail error", error);
   }
 

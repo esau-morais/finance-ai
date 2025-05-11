@@ -1,14 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Bar,
-  BarChart,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  Tooltip,
-} from "recharts";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
 import { getMonthlyData } from "@/app/actions/transactions";
 import {
   ChartConfig,
