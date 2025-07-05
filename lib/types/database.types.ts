@@ -7,31 +7,6 @@ export type Json =
   | Json[]
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          operationName?: string
-          query?: string
-          variables?: Json
-          extensions?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       ai_recommendations: {
@@ -185,6 +160,7 @@ export type Database = {
           description: string
           id: string
           transaction_date: string
+          type: Database["public"]["Enums"]["transaction_type"]
           updated_at: string | null
           user_id: string
         }
@@ -195,6 +171,7 @@ export type Database = {
           description: string
           id?: string
           transaction_date: string
+          type: Database["public"]["Enums"]["transaction_type"]
           updated_at?: string | null
           user_id: string
         }
@@ -205,6 +182,7 @@ export type Database = {
           description?: string
           id?: string
           transaction_date?: string
+          type?: Database["public"]["Enums"]["transaction_type"]
           updated_at?: string | null
           user_id?: string
         }
@@ -223,10 +201,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_id_by_email: {
+        Args: { p_email: string }
+        Returns: string
+      }
     }
     Enums: {
-      [_ in never]: never
+      transaction_type: "income" | "expense" | "investment" | "transfer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -340,11 +321,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
-    Enums: {},
+    Enums: {
+      transaction_type: ["income", "expense", "investment", "transfer"],
+    },
   },
 } as const
-

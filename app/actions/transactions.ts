@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { Tables } from "@/lib/types/database.types";
 import { revalidatePath } from "next/cache";
 
 export async function getCurrentUser() {
@@ -71,7 +72,7 @@ export async function addTransaction(formData: FormData) {
   const supabase = await createClient();
 
   const amount = Number.parseFloat(formData.get("amount") as string);
-  const type = formData.get("type") as string;
+  const type = formData.get("type") as Tables<"transactions">["type"];
   const description = formData.get("description") as string;
   const categoryId = formData.get("category") as string;
   const date = new Date(formData.get("date") as string)
@@ -82,6 +83,7 @@ export async function addTransaction(formData: FormData) {
   const finalAmount = type === "expense" ? -Math.abs(amount) : Math.abs(amount);
 
   const { error } = await supabase.from("transactions").insert({
+    type,
     user_id: user.id,
     amount: finalAmount,
     description,

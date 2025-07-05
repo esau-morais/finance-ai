@@ -1,4 +1,4 @@
-CREATE TYPE transaction_type AS ENUM ('investment', 'transfer');
+CREATE TYPE transaction_type AS ENUM ('income', 'expense', 'investment', 'transfer');
 
 CREATE TABLE IF NOT EXISTS transactions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
