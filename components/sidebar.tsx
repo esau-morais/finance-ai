@@ -25,7 +25,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-screen w-64 flex-col border-r bg-background">
+    <div className="sticky top-0 flex h-screen w-64 flex-col border-r bg-background">
       <div className="flex h-14 items-center justify-between border-b px-4">
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <DollarSign className="h-6 w-6 text-green-600" />
