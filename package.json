@@ -1,5 +1,5 @@
 {
-  "name": "my-v0-project",
+  "name": "finance-ai",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,10 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "update-types": "npx supabase gen types --lang=typescript --project-id \"$PROJECT_REF\" > ./lib/types/database.types.ts"
+    "update-types": "pnpx supabase gen types --lang=typescript --project-id \"$PROJECT_REF\" > ./lib/types/database.types.ts"
   },
   "dependencies": {
-    "@ai-sdk/openai": "latest",
+    "@ai-sdk/google": "^1.2.22",
     "@hookform/resolvers": "latest",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",
@@ -70,8 +70,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "postcss": "^8",
+    "supabase": "^2.30.4",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }
 }
-

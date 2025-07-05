@@ -1,10 +1,11 @@
 "use server";
 
 import { getCurrentUser, getTransactions } from "./transactions";
-import { generateText } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { generateObject } from "ai";
+import { google } from "@ai-sdk/google";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { z } from "zod";
 
 export async function getAIRecommendations() {
   const user = await getCurrentUser();
@@ -115,15 +116,23 @@ export async function generateRecommendations() {
 
   try {
     // Generate recommendations using AI
-    const { text } = await generateText({
-      model: openai("gpt-4o"),
+    const { object } = await generateObject({
+      schema: z.array(
+        z.object({
+          title: z.string(),
+          description: z.string(),
+          impact: z.string(),
+          icon: z.string(),
+        }),
+      ),
+      model: google("gemini-2.5-flash-lite-preview-06-17"),
       prompt: prompt,
       temperature: 0.7,
       maxTokens: 1000,
     });
 
     // Parse the response
-    const recommendations = JSON.parse(text);
+    const recommendations = JSON.parse(JSON.stringify(object));
 
     // Save recommendations to database
     const supabase = await createClient();
