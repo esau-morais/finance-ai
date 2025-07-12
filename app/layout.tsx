@@ -1,9 +1,13 @@
-import type React from "react";
-import "@/app/globals.css";
+import type { ReactNode } from "react";
+
+import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
+
 import { AuthLayout } from "@/components/auth-layout";
 import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+
+import "@/app/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,21 +16,19 @@ export const metadata = {
   description: "Track your finances and get AI-powered recommendations",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
+      <body className={inter.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <AuthLayout>{children}</AuthLayout>
+          <TooltipProvider delayDuration={300}>
+            <AuthLayout>{children}</AuthLayout>
+          </TooltipProvider>
           <Toaster />
         </ThemeProvider>
       </body>

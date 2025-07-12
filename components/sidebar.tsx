@@ -10,15 +10,26 @@ import {
   Home,
   PiggyBank,
   Settings,
+  Lock,
 } from "lucide-react";
 import { AuthButton } from "./auth-button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const sidebarLinks = [
-  { name: "Dashboard", href: "/", icon: Home },
-  { name: "Transactions", href: "/transactions", icon: CreditCard },
-  { name: "Savings", href: "/savings", icon: PiggyBank },
-  { name: "Analytics", href: "/analytics", icon: BarChart3 },
-  { name: "Settings", href: "/settings", icon: Settings },
+  { name: "Dashboard", href: "/", icon: Home, comingSoon: false },
+  {
+    name: "Transactions",
+    href: "/transactions",
+    icon: CreditCard,
+    comingSoon: false,
+  },
+  { name: "Savings", href: "/savings", icon: PiggyBank, comingSoon: true },
+  { name: "Analytics", href: "/analytics", icon: BarChart3, comingSoon: true },
+  { name: "Settings", href: "/settings", icon: Settings, comingSoon: true },
 ];
 
 export function Sidebar() {
@@ -37,17 +48,35 @@ export function Sidebar() {
         <nav className="grid items-start px-2 text-sm">
           {sidebarLinks.map((link) => {
             const Icon = link.icon;
+            const isActive = pathname === link.href;
+
+            if (link.comingSoon) {
+              return (
+                <Tooltip key={link.href}>
+                  <TooltipTrigger asChild>
+                    <div className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground/50 cursor-not-allowed">
+                      <Icon size={16} />
+                      <span className="flex-1">{link.name}</span>
+                      <Lock size={12} />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <p>Coming soon!</p>
+                  </TooltipContent>
+                </Tooltip>
+              );
+            }
+
             return (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-foreground",
-                  pathname === link.href &&
-                    "bg-muted font-medium text-foreground",
+                  isActive && "bg-muted font-medium text-foreground",
                 )}
               >
-                <Icon className="h-4 w-4" />
+                <Icon size={16} />
                 {link.name}
               </Link>
             );
